@@ -1,0 +1,31 @@
+title: Admin Or Management Route Called By Non Admin Role (DET-AUTHZ-04)
+id: 89244a7e-3e94-4b6e-b974-8480c0338c19
+status: experimental
+description: A session without an admin role reached an admin, internal, or management route. Success is an incident. Failures show probing.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.privilege-escalation
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection_event:
+        event:
+            - authz_fail
+            - authz_admin
+    selection_route:
+        route|startswith:
+            - /admin
+            - /internal
+            - /actuator
+            - /management
+    filter_admin_roles:
+        role:
+            - platform_admin
+            - iam_admin
+            - ops_admin
+    condition: selection_event and selection_route and not filter_admin_roles
+falsepositives:
+    - In cluster health checks. Exclude by source network, not by user agent.
+level: high

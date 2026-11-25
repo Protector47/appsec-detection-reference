@@ -1,0 +1,58 @@
+title: Beneficiary Added (base event for DET-BIZ-01)
+id: 1b95050a-1fed-4bd7-a5f1-f490d6c81e18
+name: appsec_beneficiary_added
+status: experimental
+description: Customer added a payee. Base rule.
+author: Protector47
+date: 2026-11-25
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: beneficiary_added
+        outcome: success
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: High Value Transfer To New Beneficiary (base event for DET-BIZ-01)
+id: 2b92d17b-1088-46b8-9b3e-1aa23cdc5e34
+name: appsec_transfer_new_beneficiary_high
+status: experimental
+description: Transfer to a new beneficiary above a floor. The amount is in minor units. 25000000 equals PKR 250,000. Set the floor with your fraud team.
+author: Protector47
+date: 2026-11-25
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: transfer_initiated
+        destination_type: new_beneficiary
+        amount|gte: 25000000
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: New Beneficiary Then High Value Transfer (DET-BIZ-01)
+id: efdbf865-7df4-47ec-ab7d-c5de5dbfb154
+status: experimental
+description: A beneficiary is added and a high value transfer to a new beneficiary follows within thirty minutes for the same user.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.impact
+correlation:
+    type: temporal_ordered
+    rules:
+        - appsec_beneficiary_added
+        - appsec_transfer_new_beneficiary_high
+    group-by:
+        - user_id
+    timespan: 30m
+falsepositives:
+    - First payment to a new landlord, school, or supplier
+level: high

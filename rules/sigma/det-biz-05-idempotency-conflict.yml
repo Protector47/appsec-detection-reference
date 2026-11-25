@@ -1,0 +1,18 @@
+title: Idempotency Key Reused With Different Payload (DET-BIZ-05)
+id: 67cae807-e62d-4e57-9b7b-2355f5f67557
+status: experimental
+description: The same idempotency key arrived with a different amount, destination, or account. Possible replay or race attempt on money movement.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.impact
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: idempotency_conflict
+    condition: selection
+falsepositives:
+    - Client bug that reuses keys
+level: high

@@ -1,0 +1,60 @@
+title: Authorization Denied (base event for DET-AUTHZ-01)
+id: e7fcd2df-ff8d-4bc2-82bb-7328f410245c
+name: appsec_authz_fail
+status: experimental
+description: Application policy denied an action. Base rule.
+author: Protector47
+date: 2026-11-25
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: authz_fail
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: Authorization Failure Spike For One User (DET-AUTHZ-01)
+id: e7fbc93f-2dcd-4e5e-936d-bff172d71bf5
+status: experimental
+description: Fifteen or more authorization denials for one user in ten minutes. Check whether resource owners differ from the user (DET-AUTHZ-02).
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.discovery
+correlation:
+    type: event_count
+    rules:
+        - appsec_authz_fail
+    group-by:
+        - user_id
+    timespan: 10m
+    condition:
+        gte: 15
+falsepositives:
+    - Front end calling an endpoint the role cannot use. Many users on the same route points to a UI bug.
+level: high
+---
+title: One User Denied On Many Foreign Owners (DET-AUTHZ-02)
+id: 375fcd59-e259-401d-ade4-1a3c52f4fdef
+status: experimental
+description: One user is denied on objects belonging to ten or more distinct owners in fifteen minutes. Likely object level authorization probing.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.discovery
+correlation:
+    type: value_count
+    rules:
+        - appsec_authz_fail
+    group-by:
+        - user_id
+    timespan: 15m
+    condition:
+        gte: 10
+        field: resource_owner
+falsepositives:
+    - Support and staff roles. Exclude them and cover with DET-DATA-02.
+level: high

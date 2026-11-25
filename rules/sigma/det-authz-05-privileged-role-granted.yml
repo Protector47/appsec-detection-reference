@@ -1,0 +1,25 @@
+title: Privileged Role Granted In Production (DET-AUTHZ-05)
+id: c95828be-12e3-462b-bd34-722166da5afd
+status: experimental
+description: A privileged role was granted. Grant to self is critical. Correlate every hit with a change ticket.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.persistence
+    - attack.t1098
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: authz_change
+        outcome: success
+        new_value:
+            - payments_approver
+            - platform_admin
+            - iam_admin
+            - ops_admin
+    condition: selection
+falsepositives:
+    - Approved access requests. Match against the ticket system.
+level: high

@@ -1,0 +1,22 @@
+title: Security Relevant Config Change (DET-PLAT-01)
+id: 21d428c4-66cb-4100-b8ab-ac162c73f24e
+status: experimental
+description: A security relevant setting changed in production. Match against an approved change id.
+author: Protector47
+date: 2026-11-25
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: config_change
+        setting|startswith:
+            - auth.
+            - security.
+            - cors.
+            - ratelimit.
+            - logging.
+    condition: selection
+falsepositives:
+    - Approved changes. Suppress when change_id matches an open approved change.
+level: high

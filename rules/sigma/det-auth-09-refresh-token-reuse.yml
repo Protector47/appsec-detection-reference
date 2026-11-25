@@ -1,0 +1,19 @@
+title: Rotated Refresh Token Reused (DET-AUTH-09)
+id: f6218773-7ff7-483e-b801-91ddfbeed5fe
+status: experimental
+description: A refresh token that was already rotated was presented again. Two parties hold the token. Revoke the token family and the session.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.credential-access
+    - attack.t1528
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: authn_token_reuse
+    condition: selection
+falsepositives:
+    - Client retry bugs on unstable networks. Measure after rollout and fix clients.
+level: high

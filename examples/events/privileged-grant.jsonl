@@ -1,0 +1,1 @@
+{"app": "retail-banking-api", "channel": "backoffice", "env": "test", "event": "authz_change", "level": "CRITICAL", "new_value": "payments_approver", "outcome": "success", "request_id": "0b12ae6ead581e57", "resource_id": "staff-0099", "resource_type": "user", "role": "iam_admin", "src_ip": "192.0.2.9", "ts": "2026-01-15T09:00:00.000Z", "user_id": "staff-0099"}

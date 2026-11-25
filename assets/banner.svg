@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#1f1a0e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <g font-family="Consolas, Menlo, monospace" font-size="13" fill="#64748b">
+    <text x="60" y="70">{"event":"authn_login_fail","user":"u-1042","src_ip":"203.0.113.7"}</text>
+    <text x="60" y="94">{"event":"authn_login_fail","user":"u-2291","src_ip":"203.0.113.7"}</text>
+    <text x="60" y="118">{"event":"authn_login_fail","user":"u-0087","src_ip":"203.0.113.7"}</text>
+    <text x="60" y="142" fill="#f59e0b">{"event":"authn_login_success","user":"u-0087","src_ip":"203.0.113.7"}</text>
+    <text x="60" y="166">{"event":"user_updated","user":"u-0087","field":"mobile_number"}</text>
+    <text x="60" y="190" fill="#f59e0b">{"event":"beneficiary_added","user":"u-0087"}</text>
+  </g>
+  <path d="M560 60 v150" stroke="#334155" stroke-width="2"/>
+  <polyline points="60,240 160,240 180,226 200,252 220,240 330,240 350,214 372,262 392,240 520,240" fill="none" stroke="#f59e0b" stroke-width="3"/>
+  <text x="600" y="132" fill="#f8fafc" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="42" font-weight="700">AppSec Detection Reference</text>
+  <text x="600" y="174" fill="#cbd5e1" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20">Application events, detection logic, and how to verify it fires</text>
+  <text x="600" y="214" fill="#94a3b8" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16">Maintained by Protector47</text>
+</svg>

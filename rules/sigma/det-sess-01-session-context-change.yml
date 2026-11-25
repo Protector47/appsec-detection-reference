@@ -1,0 +1,20 @@
+title: Session Seen From New ASN or Country (DET-SESS-01)
+id: ab4b1c3f-fdda-4be8-907d-7cb2f2158960
+status: experimental
+description: The application saw an existing session from a different ASN or country than where it was created.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.lateral-movement
+    - attack.t1550.004
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: session_context_change
+    condition: selection
+falsepositives:
+    - Mobile users moving between Wi-Fi and carrier data (compare ASN and country, not IP)
+    - Corporate VPN connect or disconnect
+level: medium

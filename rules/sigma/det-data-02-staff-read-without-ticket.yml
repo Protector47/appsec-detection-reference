@@ -1,0 +1,63 @@
+title: Staff Read Of Customer Data Without Ticket (DET-DATA-02)
+id: e55e2959-41b1-4658-9bb8-a89fefa1c61b
+name: appsec_staff_read_no_ticket
+status: experimental
+description: A back office user read a customer record without a ticket id.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.collection
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: sensitive_read
+        channel: backoffice
+    filter_ticket:
+        ticket_id|exists: true
+    condition: selection and not filter_ticket
+falsepositives:
+    - Teams whose process does not require a ticket. Give them a separate rule.
+level: medium
+---
+title: Staff Sensitive Read (base event for DET-DATA-02 volume)
+id: e1926d4e-1521-412d-a97a-7bc02a862d71
+name: appsec_staff_read
+status: experimental
+description: Any back office read of customer data. Base rule.
+author: Protector47
+date: 2026-11-25
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: sensitive_read
+        channel: backoffice
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: Staff Reads Many Distinct Customers In One Shift (DET-DATA-02)
+id: ca72d925-c8cb-4fe0-b411-83c7e573e2a6
+status: experimental
+description: One staff member read fifty or more distinct customers in eight hours.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.collection
+correlation:
+    type: value_count
+    rules:
+        - appsec_staff_read
+    group-by:
+        - user_id
+    timespan: 8h
+    condition:
+        gte: 50
+        field: resource_owner
+falsepositives:
+    - Collections and outbound call teams
+level: medium

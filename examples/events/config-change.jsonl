@@ -1,0 +1,1 @@
+{"app": "retail-banking-api", "channel": "backoffice", "env": "test", "event": "config_change", "level": "WARN", "new_value": "false", "old_value": "true", "outcome": "success", "request_id": "b9096a04e7d80068", "setting": "auth.mfa.enforced", "src_ip": "192.0.2.12", "ts": "2026-01-15T09:00:00.000Z", "user_id": "staff-0210"}

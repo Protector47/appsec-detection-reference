@@ -1,0 +1,88 @@
+title: MFA Push Denied (base event for DET-AUTH-06)
+id: 8737c85e-a3ce-4722-8589-014110204151
+name: appsec_mfa_push_denied
+status: experimental
+description: User denied or let an MFA push prompt time out. Base rule.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.credential-access
+    - attack.t1621
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: authn_mfa_fail
+        mfa_type: push
+        reason:
+            - denied
+            - timeout
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: MFA Push Approved (base event for DET-AUTH-06)
+id: b26f850b-9b26-4280-9c40-45bdc6ac2534
+name: appsec_mfa_push_approved
+status: experimental
+description: User approved an MFA push prompt. Base rule.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.credential-access
+    - attack.t1621
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: authn_mfa_success
+        mfa_type: push
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: Repeated MFA Push Denials (base correlation for DET-AUTH-06)
+id: 89c314e1-3bf7-4a9f-95cd-363c32886026
+name: appsec_mfa_push_denied_burst
+status: experimental
+description: Three or more push denials for one user in ten minutes.
+author: Protector47
+date: 2026-11-25
+correlation:
+    type: event_count
+    rules:
+        - appsec_mfa_push_denied
+    group-by:
+        - user_id
+    timespan: 10m
+    condition:
+        gte: 3
+    generate: true
+falsepositives:
+    - User repeatedly tapping deny by mistake (rare)
+level: medium
+---
+title: MFA Push Fatigue Then Approval (DET-AUTH-06)
+id: 40a5b5ee-2e5f-4709-ae9b-4102de8e574f
+status: experimental
+description: A burst of denied push prompts is followed by an approval for the same user. Treat as account takeover until proved otherwise.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.credential-access
+    - attack.t1621
+correlation:
+    type: temporal_ordered
+    rules:
+        - appsec_mfa_push_denied_burst
+        - appsec_mfa_push_approved
+    group-by:
+        - user_id
+    timespan: 10m
+falsepositives:
+    - Very few
+level: critical

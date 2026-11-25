@@ -1,0 +1,60 @@
+title: Input Validation Failure (base event for DET-INPUT-01)
+id: c3323b9d-fe61-4b95-af32-2e590213a20b
+name: appsec_input_validation_fail
+status: experimental
+description: Server side validation rejected input. Base rule.
+author: Protector47
+date: 2026-11-25
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: input_validation_fail
+    condition: selection
+falsepositives:
+    - Not alerted on its own
+level: informational
+---
+title: Validation Failure Spike From One Source (DET-INPUT-01)
+id: ded9ba2b-e8e9-4943-9538-c76b8735a5da
+status: experimental
+description: Twenty five or more validation failures from one source IP in ten minutes. Confirm it is not your own DAST or pentest before acting.
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.reconnaissance
+    - attack.t1595.002
+correlation:
+    type: event_count
+    rules:
+        - appsec_input_validation_fail
+    group-by:
+        - src_ip
+    timespan: 10m
+    condition:
+        gte: 25
+falsepositives:
+    - Authorized scanners and pentests
+    - Broken client release
+level: medium
+---
+title: Parser Or Template Error From User Input (DET-INPUT-02)
+id: 72644e54-a3ef-43d5-876b-6a6837ea04ab
+status: experimental
+description: The application raised an exception type that normal input should not produce (SQL syntax, template syntax, XML entity, deserialization type).
+author: Protector47
+date: 2026-11-25
+tags:
+    - attack.initial-access
+    - attack.t1190
+logsource:
+    product: appsec
+    service: security_events
+detection:
+    selection:
+        event: malicious_input_suspect
+    condition: selection
+falsepositives:
+    - A real bug in a query or template
+level: high

@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Protector47/appsec-detection-reference/schema/security-event.schema.json",
+  "title": "Application security event",
+  "description": "One structured security event emitted by an application. See docs/01-logging-baseline.md.",
+  "type": "object",
+  "required": [
+    "ts",
+    "event",
+    "level",
+    "app",
+    "env",
+    "request_id",
+    "src_ip",
+    "outcome"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "event": {
+      "type": "string",
+      "enum": [
+        "authn_login_success",
+        "authn_login_fail",
+        "authn_login_lock",
+        "authn_mfa_challenge",
+        "authn_mfa_success",
+        "authn_mfa_fail",
+        "authn_mfa_change",
+        "authn_password_change",
+        "authn_password_reset_request",
+        "authn_token_created",
+        "authn_token_revoked",
+        "authn_token_reuse",
+        "authn_impossible_travel",
+        "session_created",
+        "session_renewed",
+        "session_expired",
+        "session_use_after_expire",
+        "session_context_change",
+        "authz_fail",
+        "authz_change",
+        "authz_admin",
+        "input_validation_fail",
+        "input_unexpected_field",
+        "malicious_input_suspect",
+        "data_export",
+        "sensitive_read",
+        "beneficiary_added",
+        "beneficiary_removed",
+        "contact_updated",
+        "limit_changed",
+        "transfer_initiated",
+        "transfer_completed",
+        "transfer_rejected",
+        "idempotency_conflict",
+        "device_bound",
+        "device_unbound",
+        "promo_redeemed",
+        "config_change",
+        "sys_startup",
+        "sys_shutdown",
+        "log_pipeline_error"
+      ]
+    },
+    "level": {
+      "enum": [
+        "INFO",
+        "WARN",
+        "CRITICAL"
+      ]
+    },
+    "app": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "env": {
+      "enum": [
+        "prod",
+        "uat",
+        "dev",
+        "test"
+      ]
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64
+    },
+    "src_ip": {
+      "type": "string",
+      "anyOf": [
+        {
+          "format": "ipv4"
+        },
+        {
+          "format": "ipv6"
+        }
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "success",
+        "failure"
+      ]
+    },
+    "user_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "tenant_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "resource_tenant_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "session_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{16,64}$"
+    },
+    "device_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "user_agent": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "asn": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "geo_country": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "route": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "role": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "resource_type": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "resource_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "resource_owner": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "reason": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]{1,48}$"
+    },
+    "mfa_type": {
+      "enum": [
+        "push",
+        "totp",
+        "sms",
+        "email",
+        "fido2"
+      ]
+    },
+    "field": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 64
+      },
+      "maxItems": 32
+    },
+    "amount": {
+      "type": "integer",
+      "description": "Minor units"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "destination_type": {
+      "enum": [
+        "own_account",
+        "beneficiary",
+        "new_beneficiary",
+        "biller",
+        "wallet"
+      ]
+    },
+    "beneficiary_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "old_value": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "new_value": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "row_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ticket_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "change_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "setting": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "promo_code_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{16,64}$"
+    },
+    "channel": {
+      "enum": [
+        "web",
+        "mobile",
+        "api",
+        "branch",
+        "ivr",
+        "backoffice"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 512
+    }
+  },
+  "additionalProperties": false
+}
